@@ -1,20 +1,13 @@
-const { extend } = require("lodash");
-const updateUser = async (req, res) => {
+const { Account } = require("../models/account.model");
+const { UserDetails } = require("../models/userDetails.model");
+const jwt = require("jsonwebtoken");
+const updateAccount = async (req, res) => {
   try {
-    let { user } = req;
-    const newdata = req.body;
-    const updatedUser = {
-      username: newdata.username,
-      email: newdata.email,
-      password: newdata.password,
-    };
-    user = extend(user, updatedUser);
-    await user.save();
-    res.json({
-      success: true,
-      id: user._id,
-      icon: user.username[0],
-    });
+    const { user } = req;
+    const newDetails = req.body;
+    await Account.findByIdAndUpdate(user._id, newDetails);
+    const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
+    res.json({ success: true, id: token });
   } catch {
     res
       .status(500)
@@ -22,4 +15,19 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { updateUser };
+const updateUser = async (req, res) => {
+  try {
+    const { user } = req;
+    const newDetails = req.body;
+    await UserDetails.findOneAndUpdate({ userId: user._id }, newDetails);
+
+    const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
+    res.json({ success: true });
+  } catch {
+    res
+      .status(500)
+      .json({ success: false, message: "Unable to update user details" });
+  }
+};
+
+module.exports = { updateAccount, updateUser };
