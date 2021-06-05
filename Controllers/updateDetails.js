@@ -1,10 +1,12 @@
 const { Account } = require("../models/account.model");
 const { UserDetails } = require("../models/userDetails.model");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt")
 const updateAccount = async (req, res) => {
   try {
     const { user } = req;
-    const newDetails = req.body;
+    let newDetails = req.body;
+    newDetails.password = bcrypt.hashSync(newDetails.password, 10);
     await Account.findByIdAndUpdate(user._id, newDetails);
     const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
     res.json({ success: true, id: token });

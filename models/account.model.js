@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcrypt")
 const accountSchema = new Schema(
   {
     id: Schema.Types.ObjectId,
@@ -41,6 +42,18 @@ const accountSchema = new Schema(
   },
   { timestamps: true }
 );
+
+accountSchema.pre("save", function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+  this.password = bcrypt.hashSync(this.password, 10);
+  next();
+});
+
+accountSchema.methods.comparePassword = function (plaintext, callback) {
+  return callback(null, bcrypt.compareSync(plaintext, this.password));
+};
 
 const Account = mongoose.model("User", accountSchema);
 module.exports = { Account };
