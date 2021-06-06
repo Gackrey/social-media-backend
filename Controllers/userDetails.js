@@ -54,7 +54,8 @@ const addUserDetails = async (req, res) => {
     userBody.userId = user._id;
     const NewUser = UserDetails(userBody);
     const savedUser = await NewUser.save();
-    res.json({ success: true, savedUser });
+    const { profile_pic, bio, url } = savedUser;
+    res.json({ success: true, profile_pic, bio, url });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -71,7 +72,7 @@ const showAllUsers = async (req, res) => {
     const count = accounts.length;
     let results = [];
     for (let i = 0; i < count; i++) {
-      const { _id,firstname, lastname, email, phone } = accounts[i];
+      const { _id, firstname, lastname, email, phone } = accounts[i];
       const { url, bio, profile_pic, following, followers } = users[i];
       const single_user = {
         _id,

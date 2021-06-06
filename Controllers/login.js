@@ -10,12 +10,17 @@ const login = async (req, res) => {
           { id: userdata._id },
           process.env.ACCESS_TOKEN_SECRET
         );
-        res.json({ success: true, id: token });
-      }
-      else{          
-          res
-            .status(500)
-            .json({ success: false, message: "Password didn't match" });
+        res.json({
+          success: true,
+          id: token,
+          firstname: userdata.firstname,
+          lastname: userdata.lastname,
+          email: userdata.email,
+        });
+      } else {
+        res
+          .status(500)
+          .json({ success: false, message: "Password didn't match" });
       }
     });
   } catch (err) {
