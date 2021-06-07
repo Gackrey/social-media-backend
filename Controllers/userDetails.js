@@ -54,8 +54,8 @@ const addUserDetails = async (req, res) => {
     userBody.userId = user._id;
     const NewUser = UserDetails(userBody);
     const savedUser = await NewUser.save();
-    const { profile_pic, bio, url } = savedUser;
-    res.json({ success: true, profile_pic, bio, url });
+    const { profile_pic } = savedUser;
+    res.json({ success: true, profile_pic});
   } catch (err) {
     res.status(500).json({
       success: false,

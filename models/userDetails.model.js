@@ -20,14 +20,22 @@ const userDetailSchema = new Schema(
     },
     followers: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "User",
+        name: String,
+        profile_pic: String,
+        userID: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
       },
     ],
     following: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "User",
+        name: String,
+        profile_pic: String,
+        userID: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
       },
     ],
   },

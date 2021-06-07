@@ -16,14 +16,20 @@ const postSchema = new Schema(
     },
     liked_by: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "User",
+        name: String,
+        profile_pic: String,
+        userID: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
       },
     ],
     comments: [
       {
         message: String,
-        by: {
+        name: String,
+        profile_pic: String,
+        userID: {
           type: Schema.Types.ObjectId,
           ref: "User",
         },

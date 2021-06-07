@@ -13,7 +13,6 @@ const signup = async (req, res) => {
       success: true,
       id: token,
       firstname: savedUser.firstname,
-      lastname: savedUser.lastname,
       email: savedUser.email,
     });
   } catch (err) {

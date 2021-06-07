@@ -13,18 +13,13 @@ const login = async (req, res) => {
         );
         (async function () {
           const user_det = await UserDetails.findOne({ userId: userdata._id });
-          const { url, bio, profile_pic, following, followers } = user_det;
+          const {  profile_pic } = user_det;
           res.json({
             success: true,
             id: token,
             firstname: userdata.firstname,
-            lastname: userdata.lastname,
             email: userdata.email,
-            url,
-            bio,
             profile_pic,
-            following,
-            followers,
           });
         })();
       } else {

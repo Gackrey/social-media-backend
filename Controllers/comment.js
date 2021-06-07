@@ -1,9 +1,17 @@
 const { Post } = require("../models/posts.model");
+const { UserDetails } = require("../models/userDetails.model");
 const addComment = async (req, res) => {
   try {
     const { user } = req;
+    const name = `${user.firstname} ${user.lastname}`;
     let { _id, comments, comment } = req.body;
-    comments.push({ message: comment, by: user._id });
+    const user_det = await UserDetails.findOne({ userId: user._id });
+    comments.push({
+      name,
+      profile_pic: user_det.profile_pic,
+      message: comment,
+      userID: user._id,
+    });
     await Post.findByIdAndUpdate(_id, { comments: comments });
     res.json({ success: true });
   } catch {
