@@ -11,8 +11,12 @@ const postSchema = new Schema(
       type: String,
     },
     owner: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      name: String,
+      profile_pic: String,
+      userID: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
     },
     liked_by: [
       {

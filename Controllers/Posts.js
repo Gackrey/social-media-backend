@@ -1,9 +1,16 @@
 const { Post } = require("../models/posts.model");
+const { UserDetails } = require("../models/userDetails.model");
 const createPost = async (req, res) => {
   try {
     const { user } = req;
     const userPost = req.body;
-    userPost.owner = user._id;
+    const name = `${user.firstname} ${user.lastname}`;
+    const user_det = await UserDetails.findOne({ userId: user._id });
+    userPost.owner = {
+      name,
+      profile_pic: user_det.profile_pic,
+      userID: user._id,
+    };
     const NewPost = Post(userPost);
     const savedPost = await NewPost.save();
     res.json({ success: true, savedPost });
@@ -18,9 +25,9 @@ const deletePost = async (req, res) => {
   try {
     const { user } = req;
     const delPost = req.body;
-    if (user._id.toString() === delPost.owner.toString()) {
+    if (user._id.toString() === delPost.owner.userID.toString()) {
       await Post.findByIdAndDelete(delPost._id);
-      res.json({ success: true });
+      res.json({ success: true, post_id: delPost._id });
     } else {
       res.status(403).json({ success: false });
     }
@@ -35,9 +42,9 @@ const editPost = async (req, res) => {
   try {
     const { user } = req;
     const editPost = req.body;
-    if (user._id.toString() === editPost.owner.toString()) {
+    if (user._id.toString() === editPost.owner.userID.toString()) {
       await Post.findByIdAndUpdate(editPost._id, editPost);
-      res.json({ success: true });
+      res.json({ success: true, post_id: editPost._id });
     } else {
       res.status(403).json({ success: false });
     }
@@ -52,7 +59,7 @@ const editPost = async (req, res) => {
 const showUserPosts = async (req, res) => {
   try {
     const { user } = req;
-    const allUserPosts = await Post.find({ owner: user._id });
+    const allUserPosts = await Post.find({ "owner.userID": user._id });
     res.json({ success: true, allUserPosts });
   } catch {
     res.status(400).json({
