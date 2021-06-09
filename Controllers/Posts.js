@@ -55,19 +55,6 @@ const editPost = async (req, res) => {
     });
   }
 };
-
-const showUserPosts = async (req, res) => {
-  try {
-    const { user } = req;
-    const allUserPosts = await Post.find({ "owner.userID": user._id });
-    res.json({ success: true, allUserPosts });
-  } catch {
-    res.status(400).json({
-      success: false,
-      message: "Unable to user's posts",
-    });
-  }
-};
 const showAll = async (req, res) => {
   try {
     const allPosts = await Post.find();

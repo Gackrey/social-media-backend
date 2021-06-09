@@ -6,7 +6,6 @@ const {
   createPost,
   deletePost,
   editPost,
-  showUserPosts,
   showAll,
 } = require("../Controllers/Posts");
 
@@ -20,7 +19,6 @@ router
 
 router.route("/update").post(getUserbyId, editPost);
 router.route("/show-all").get(showAll);
-router.route("/show-user-posts").get(getUserbyId, showUserPosts);
 
 router
   .route("/liked")

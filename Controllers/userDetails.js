@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { Account } = require("../models/account.model");
 const { UserDetails } = require("../models/userDetails.model");
+const { Post } = require("../models/posts.model");
 const getUserbyId = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
@@ -22,23 +23,23 @@ const getUserbyId = async (req, res, next) => {
 
 const getUserDetails = async (req, res) => {
   try {
-    const { user } = req;
-    const { _id, firstname, lastname, email, phone } = user;
-    user.__v = undefined;
-    const user_det = await UserDetails.findOne({ userId: user._id });
+    const { _id } = req.body;
+    const account_det = await Account.findById(_id);
+    const user_det = await UserDetails.findOne({ userId: _id });
+    const user_post_det = await Post.find({ "owner.userID": _id });
     const { url, bio, profile_pic, following, followers } = user_det;
-    console.log(user_det);
     res.json({
       _id,
-      firstname,
-      lastname,
-      email,
-      phone,
+      firstname: account_det.firstname,
+      lastname: account_det.lastname,
+      email: account_det.email,
+      phone: account_det.phone,
       url,
       bio,
       profile_pic,
       following,
       followers,
+      posts: user_post_det,
     });
   } catch {
     res
@@ -55,7 +56,7 @@ const addUserDetails = async (req, res) => {
     const NewUser = UserDetails(userBody);
     const savedUser = await NewUser.save();
     const { profile_pic } = savedUser;
-    res.json({ success: true, profile_pic});
+    res.json({ success: true, profile_pic });
   } catch (err) {
     res.status(500).json({
       success: false,
