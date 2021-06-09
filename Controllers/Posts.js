@@ -66,4 +66,4 @@ const showAll = async (req, res) => {
     });
   }
 };
-module.exports = { createPost, deletePost, editPost, showUserPosts, showAll };
+module.exports = { createPost, deletePost, editPost, showAll };
