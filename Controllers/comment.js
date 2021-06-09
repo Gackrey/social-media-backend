@@ -13,7 +13,7 @@ const addComment = async (req, res) => {
       userID: user._id,
     });
     await Post.findByIdAndUpdate(_id, { comments: comments });
-    res.json({ success: true });
+    res.json({ success: true, _id, comments });
   } catch {
     res.status(400).json({ success: false, error: "Cannot follow users" });
   }
@@ -22,13 +22,13 @@ const addComment = async (req, res) => {
 const deleteComment = async (req, res) => {
   try {
     const { user } = req;
-    let { _id, comment_id, owner, comments } = req.body;
+    let { post_id, comment_id, owner, comments } = req.body;
     if (user._id.toString() === owner.toString()) {
       comments = comments.filter(
         (s_user) => s_user._id.toString() !== comment_id.toString()
       );
-      await Post.findByIdAndUpdate(_id, { comments: comments });
-      res.json({ success: true });
+      await Post.findByIdAndUpdate(post_id, { comments: comments });
+      res.json({ success: true, post_id, comments });
     } else {
       res
         .status(400)

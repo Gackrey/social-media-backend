@@ -13,7 +13,7 @@ const addLike = async (req, res) => {
       userID: user._id,
     });
     await Post.findByIdAndUpdate(post._id, { liked_by: updatedLiked });
-    res.json({ success: true });
+    res.json({ success: true, _id: post._id, updatedLiked });
   } catch {
     res.status(400).json({ success: false, error: "Cannot add like to post" });
   }
@@ -21,18 +21,12 @@ const addLike = async (req, res) => {
 const removeLike = async (req, res) => {
   try {
     const { user } = req;
-    let { liked_by, _id, owner } = req.body;
-    if (user._id.toString() === owner.toString()) {
-      liked_by = liked_by.filter(
-        (liked_val) => liked_val.userID.toString() !== user._id.toString()
-      );
-      await Post.findByIdAndUpdate(_id, { liked_by: liked_by });
-      res.json({ success: true });
-    } else {
-      res
-        .status(400)
-        .json({ success: false, error: "Not authorized to delete" });
-    }
+    let { liked_by, _id } = req.body;
+    liked_by = liked_by.filter(
+      (liked_val) => liked_val.userID.toString() !== user._id.toString()
+    );
+    await Post.findByIdAndUpdate(_id, { liked_by: liked_by });
+    res.json({ success: true, _id, liked_by });
   } catch {
     res.status(400).json({ success: false, error: "Unable dislike to post" });
   }

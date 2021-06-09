@@ -30,7 +30,7 @@ const updateUser = async (req, res) => {
     await UserDetails.findOneAndUpdate({ userId: user._id }, newDetails);
 
     const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
-    res.json({ success: true });
+    res.json({ success: true, profile_pic: newDetails.profile_pic });
   } catch {
     res
       .status(500)
