@@ -13,7 +13,8 @@ const addComment = async (req, res) => {
       userID: user._id,
     });
     await Post.findByIdAndUpdate(_id, { comments: comments });
-    res.json({ success: true, _id, comments });
+    const post = await Post.findById(_id);
+    res.json({ success: true, _id, comments: post.comments });
   } catch {
     res.status(400).json({ success: false, error: "Cannot follow users" });
   }
@@ -28,7 +29,7 @@ const deleteComment = async (req, res) => {
         (s_user) => s_user._id.toString() !== comment_id.toString()
       );
       await Post.findByIdAndUpdate(post_id, { comments: comments });
-      res.json({ success: true, post_id, comments });
+      res.json({ success: true, _id: post_id, comments });
     } else {
       res
         .status(400)

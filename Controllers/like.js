@@ -13,7 +13,7 @@ const addLike = async (req, res) => {
       userID: user._id,
     });
     await Post.findByIdAndUpdate(post._id, { liked_by: updatedLiked });
-    res.json({ success: true, _id: post._id, updatedLiked });
+    res.json({ success: true, _id: post._id, liked_by: updatedLiked });
   } catch {
     res.status(400).json({ success: false, error: "Cannot add like to post" });
   }
