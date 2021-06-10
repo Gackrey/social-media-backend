@@ -44,7 +44,7 @@ const editPost = async (req, res) => {
     const editPost = req.body;
     if (user._id.toString() === editPost.owner.userID.toString()) {
       await Post.findByIdAndUpdate(editPost._id, editPost);
-      res.json({ success: true, post_id: editPost._id });
+      res.json({ success: true, post_id: editPost._id, updatedPost: editPost });
     } else {
       res.status(403).json({ success: false });
     }
