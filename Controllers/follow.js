@@ -29,7 +29,7 @@ const addFollowing = async (req, res) => {
       { userId: to_add._id },
       { followers: updatedFollower }
     );
-    res.json({ success: true });
+    res.json({ success: true, updatedFollowing });
   } catch {
     res.status(400).json({ success: false, error: "Cannot follow users" });
   }
@@ -60,7 +60,7 @@ const removeFollowing = async (req, res) => {
       { userId: to_add._id },
       { followers: updatedFollower }
     );
-    res.json({ success: true });
+    res.json({ success: true, updatedFollowing });
   } catch {
     res.status(400).json({ success: false, error: "Cannot unfollow users" });
   }
