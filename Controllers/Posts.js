@@ -58,7 +58,10 @@ const editPost = async (req, res) => {
 const showAll = async (req, res) => {
   try {
     const allPosts = await Post.find();
-    res.json({ success: true, allPosts });
+    const sortedPosts = allPosts.sort(
+      (a, b) => b.createdAt - a.createdAt
+    );
+    res.json({ success: true, sortedPosts });
   } catch {
     res.status(400).json({
       success: false,
