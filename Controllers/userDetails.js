@@ -26,7 +26,9 @@ const getUserDetails = async (req, res) => {
     const { _id } = req.body;
     const account_det = await Account.findById(_id);
     const user_det = await UserDetails.findOne({ userId: _id });
-    const user_post_det = await Post.find({ "owner.userID": _id });
+    const user_post_det = await Post.find({ "owner.userID": _id }).sort({
+      "createdAt" : -1,
+    });
     const { url, bio, profile_pic, following, followers } = user_det;
     res.json({
       _id,
