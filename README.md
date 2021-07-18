@@ -5,3 +5,4 @@ This is the backend for social media app
  * Mongo DB
  * JWT
  * Lodash
+ * bcrypt
