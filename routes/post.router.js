@@ -7,6 +7,7 @@ const {
   deletePost,
   editPost,
   showAll,
+  showPost,
 } = require("../Controllers/Posts");
 
 const { addLike, removeLike } = require("../Controllers/like");
@@ -19,6 +20,7 @@ router
 
 router.route("/update").post(getUserbyId, editPost);
 router.route("/show-all").get(showAll);
+router.route("/show").get(showPost);
 
 router
   .route("/liked")

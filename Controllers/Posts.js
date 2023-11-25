@@ -55,12 +55,24 @@ const editPost = async (req, res) => {
     });
   }
 };
+
+const showPost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.query.id);
+    if (post) {
+      res.json({ success: true, post: post });
+    } else {
+      res.status(400).json({ success: false, message: "Post Not Found" });
+    }
+  } catch (err) {
+    res.status(400).json({ success: false, message: "Post Not Found" });
+  }
+};
+
 const showAll = async (req, res) => {
   try {
     const allPosts = await Post.find();
-    const sortedPosts = allPosts.sort(
-      (a, b) => b.createdAt - a.createdAt
-    );
+    const sortedPosts = allPosts.sort((a, b) => b.createdAt - a.createdAt);
     res.json({ success: true, sortedPosts });
   } catch {
     res.status(400).json({
@@ -69,4 +81,10 @@ const showAll = async (req, res) => {
     });
   }
 };
-module.exports = { createPost, deletePost, editPost, showAll };
+module.exports = {
+  createPost,
+  deletePost,
+  editPost,
+  showPost,
+  showAll,
+};
